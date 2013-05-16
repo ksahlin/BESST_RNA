@@ -24,7 +24,6 @@ CMD="time python2.7 Main.py 1 \
         -T 20000\
         -k 500\
         -d 1\
-        -g 0\
         -z 1000\
         -o $OUT "
 
