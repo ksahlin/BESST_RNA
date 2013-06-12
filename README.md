@@ -1,19 +1,16 @@
 BESST_RNA
 =========
 
-Scaffolding of genomic assemblies with RNA seq data
+Scaffolding of genomic assemblies with RNA seq data.
 
 
-BESST
-======
- 
 INPUT:
 -------
 Required arguments:
 
 * -c <path to a contig file>  
 
-*  -f < path to bamfiles>  (increasing order of insert size)
+*  -f < path to bamfile of RNA-seq data mapped to assembly> 
 
 * -o <path to location for the output>
 
@@ -25,17 +22,14 @@ Required arguments:
 
 * -d <check for sequencing duplicates and count only one of them (when computing nr of links) if they are occurring> (default on = 1). <0 or 1> 
 
-* -z <Coverage cutoff for repeat classification> Should be set high (i.e repeat detection turned of) for RNA scaffolding since repeat classification is not trusted with this type of data. [ e.g. -z 100 says that contigs with coverage over 100 will be discarded from scaffolding.]
+* -z <Coverage cutoff for repeat classification> Should be set high (i.e repeat detection turned of) for RNA scaffolding since repeat classification is not trusted with this type of data. [ e.g. -z 1000 says that contigs with coverage over 100 will be discarded from scaffolding.]
 
 
 
 EXAMPLE RUN:
 
-runBESST -c /path/to/contigfile.fa -f /path/to/file1.bam /path/to/file2.bam -o /path/to/output	-e 3  -T 20000 -k 500  -d 1  -z 1000        -o /path/to/output
+$ python Main.py 1 -c /path/to/contigfile.fa -f /path/to/bamfile -o /path/to/output	-e 3  -T 20000 -k 500  -d 1  -z 1000 
 
-Optional arguments:
-
-The following arguments are computed internally by BESST. It is however good to specify mean and standard deviation if your assembly is very fragmented compared to the library insert size (not enough large contains to compute library statistics on).
 
 
 NOTE:
