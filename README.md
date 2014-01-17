@@ -8,23 +8,25 @@ INPUT:
 -------
 Required arguments:
 
-* -c str < path to a contig file >  
+* -c <str> Path to a contig file. 
 
-*  -f str < path to bamfile of RNA-seq data mapped to assembly> 
+*  -f <str> Path to bamfile of RNA-seq data mapped to assembly. 
 
-* -o str < path to location for the output >
+* -o <str> Path to location for the output.
 
-* -e int < The least amount of witness links that is needed to create a link edge in graph (one for each library) > (integer number) 
+Optional arguments
 
-* -T int < Upper threshold on the distance between RNA reads. RNA reads with distance over this threshold is not considered to be mapped correctly. e.g. could be set to the upper estimated intron size. >
+* -e <int> The least amount of witness links that is needed to create a link edge in graph (one for each library). 
 
-* -k  int < Minimum size of contig to be included in the scaffolding > 
+* -T <int> Upper threshold on the distance between RNA reads. RNA reads with distance over this threshold is not considered to be mapped correctly. e.g. could be set to the upper estimated intron size.
 
-* -d bool < check for sequencing duplicates and count only one of them (when computing nr of links) if they are occurring > (default on = 1).
+* -k <int> Minimum size of contig to be included in the scaffolding.
 
-* -z int < Coverage cutoff for repeat classification > Should be set high (i.e repeat detection turned of) for RNA scaffolding since repeat classification is not trusted with this type of data. [ e.g. -z 1000 says that contigs with coverage over 100 will be discarded from scaffolding.]
+* -d <bool> Check for sequencing duplicates and count only one of them (when computing nr of links) if they are occurring. (default on = 1).
 
+* -z <int> Coverage cutoff for repeat classification > Should be set high (i.e repeat detection turned of) for RNA scaffolding since repeat classification is not trusted with this type of data. [ e.g. -z 1000 says that contigs with coverage over 100 will be discarded from scaffolding.]
 
+* --mapq <int> Lowest mapping quality allowed in order to use the read. This value is compared to the mapping quality column in the BAM file. Default = 10.
 
 EXAMPLE RUN:
 
