@@ -18,6 +18,8 @@ Optional arguments
 
 * -e <int> The least amount of witness links that is needed to create a link edge in graph (one for each library). 
 
+* -w <int> real weight parameter. Given multiple edges from a given contig(-end) inference on which one to be chosen needs to be done. -w is the minimum threshold of the relative weight for the dominating edge (most amount of links) to the second most dominating edge for a given contig-end. If weight is less than specified -w, no edge will be chosen to extend this contig. Default value is 3.
+
 * -T <int> Upper threshold on the distance between RNA reads. RNA reads with distance over this threshold is not considered to be mapped correctly. e.g. could be set to the upper estimated intron size.
 
 * -k <int> Minimum size of contig to be included in the scaffolding.
