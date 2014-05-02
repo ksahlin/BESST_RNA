@@ -32,6 +32,8 @@ Optional arguments
 
 EXAMPLE RUN:
 
+From /<path to>/BESST_RNA/src/ , run
+
 $ python Main.py 1 -c /path/to/contigfile.fa -f /path/to/bamfile -o /path/to/output	-e 3  -T 20000 -k 500  -d 1  -z 1000 
 
 
