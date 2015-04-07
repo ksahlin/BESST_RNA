@@ -153,33 +153,55 @@ def RemoveAmbiguousRegions(G, Information, param):
 
 def RemoveLoops(G, Scaffolds, Contigs, Information, F):
 #### After the proceure above, we hope that the graph is almost perfectly linear but we can still be encountering cycles (because of repeats or haplotypic contigs that has slipped through our conditions). Thus we finally search for loops
-    print 'Contigs/scaffolds left:', len(G.nodes()) / 2
-    print 'Remove remaining cycles...'
-    graphs = nx.connected_component_subgraphs(G)
-    #print 'Nr connected components',len(graphs)
+    print >> Information, 'Contigs/scaffolds left:', len(G.nodes()) / 2
+    print >> Information, 'Remove remaining cycles...'
     counter = 0
-    for graph in graphs:
-        list_of_cycles = algorithms.cycles.cycle_basis(graph)
-        marked_scaf = set()
-        for cycle in list_of_cycles:
-            #print >> Information, 'A cycle in the scaffold graph: '+str(cycle)+'\n'
-            print >> Information, 'A cycle in the scaffold graph consisting of input contigs/scaffolds: '
-            for scaf in cycle:
-                if Scaffolds[scaf[0]].contigs[0] not in marked_scaf:
-                    print >> Information, Scaffolds[scaf[0]].contigs[0].name
-                    marked_scaf.add(Scaffolds[scaf[0]].contigs[0])
-            counter += 1
-            for node in cycle:
-                if node in G:
-                    #we split up the whole cycle into separate contigs and send them to F
-                    scaffold_ = node[0]
-                    G.remove_nodes_from([(scaffold_, 'L'), (scaffold_, 'R')])
-                    S_obj = Scaffolds[scaffold_]
-                    list_of_contigs = S_obj.contigs   #list of contig objects contained in scaffold object
-                    Contigs, F = GO.WriteToF(F, Contigs, list_of_contigs)
-                    del Scaffolds[scaffold_]
+    #for graph in graphs:
+    list_of_cycles = algorithms.cycles.cycle_basis(G)
+    for cycle in list_of_cycles:
+        print >> Information, 'A cycle in the scaffold graph: ' + str(cycle) + '\n'
+        print >> Information, 'A cycle in the scaffold graph: ' + str(cycle)
+        counter += 1
+        for node in cycle:
+            if node in G:
+                #we split up the whole cycle into separate contigs and send them to F
+                scaffold_ = node[0]
+                G.remove_nodes_from([(scaffold_, 'L'), (scaffold_, 'R')])
+                S_obj = Scaffolds[scaffold_]
+                list_of_contigs = S_obj.contigs   #list of contig objects contained in scaffold object
+                Contigs, F = GO.WriteToF(F, Contigs, list_of_contigs)
     print >> Information, str(counter) + ' cycles removed from graph.'
     return(G, Contigs, Scaffolds)
+
+# def RemoveLoops(G, Scaffolds, Contigs, Information, F):
+# #### After the proceure above, we hope that the graph is almost perfectly linear but we can still be encountering cycles (because of repeats or haplotypic contigs that has slipped through our conditions). Thus we finally search for loops
+#     print 'Contigs/scaffolds left:', len(G.nodes()) / 2
+#     print 'Remove remaining cycles...'
+#     graphs = nx.connected_component_subgraphs(G)
+#     #print 'Nr connected components',len(graphs)
+#     counter = 0
+#     for graph in graphs:
+#         list_of_cycles = algorithms.cycles.cycle_basis(graph)
+#         marked_scaf = set()
+#         for cycle in list_of_cycles:
+#             #print >> Information, 'A cycle in the scaffold graph: '+str(cycle)+'\n'
+#             print >> Information, 'A cycle in the scaffold graph consisting of input contigs/scaffolds: '
+#             for scaf in cycle:
+#                 if Scaffolds[scaf[0]].contigs[0] not in marked_scaf:
+#                     print >> Information, Scaffolds[scaf[0]].contigs[0].name
+#                     marked_scaf.add(Scaffolds[scaf[0]].contigs[0])
+#             counter += 1
+#             for node in cycle:
+#                 if node in G:
+#                     #we split up the whole cycle into separate contigs and send them to F
+#                     scaffold_ = node[0]
+#                     G.remove_nodes_from([(scaffold_, 'L'), (scaffold_, 'R')])
+#                     S_obj = Scaffolds[scaffold_]
+#                     list_of_contigs = S_obj.contigs   #list of contig objects contained in scaffold object
+#                     Contigs, F = GO.WriteToF(F, Contigs, list_of_contigs)
+#                     del Scaffolds[scaffold_]
+#     print >> Information, str(counter) + ' cycles removed from graph.'
+#     return(G, Contigs, Scaffolds)
 
 def NewContigsScaffolds(G, Contigs, Scaffolds, F, Information, C_dict, dValuesTable, param):
 ### Remaining scaffolds are true sensible scaffolds, we must now update both the library of scaffold objects and the library of contig objects
