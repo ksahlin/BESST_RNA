@@ -205,7 +205,7 @@ def RemoveLoops(G, Scaffolds, Contigs, Information, F):
 
 def NewContigsScaffolds(G, Contigs, Scaffolds, F, Information, C_dict, dValuesTable, param):
 ### Remaining scaffolds are true sensible scaffolds, we must now update both the library of scaffold objects and the library of contig objects
-    new_scaffolds_ = nx.connected_component_subgraphs(G)
+    new_scaffolds_ = list(nx.connected_component_subgraphs(G))
     print 'Nr of new scaffolds created: ' + str(len(new_scaffolds_))
     print >> Information, 'Nr of new scaffolds created in this step: ' + str(len(new_scaffolds_))
     for new_scaffold_ in new_scaffolds_:
