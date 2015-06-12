@@ -167,9 +167,9 @@ def RemoveLoops(G, Scaffolds, Contigs, Information, F):
                 #we split up the whole cycle into separate contigs and send them to F
                 scaffold_ = node[0]
                 G.remove_nodes_from([(scaffold_, 'L'), (scaffold_, 'R')])
-                S_obj = Scaffolds[scaffold_]
-                list_of_contigs = S_obj.contigs   #list of contig objects contained in scaffold object
-                Contigs, F = GO.WriteToF(F, Contigs, list_of_contigs)
+                #S_obj = Scaffolds[scaffold_]
+                #list_of_contigs = S_obj.contigs   #list of contig objects contained in scaffold object
+                #Contigs, F = GO.WriteToF(F, Contigs, list_of_contigs)
     print >> Information, str(counter) + ' cycles removed from graph.'
     return(G, Contigs, Scaffolds)
 
