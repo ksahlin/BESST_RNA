@@ -429,10 +429,11 @@ def GetParams(bam_file, param, Scaffolds, C_dict, F, Contigs):
     cont_lengths = bam_file.lengths
     #cont_lengths=[int(nr) for nr in cont_lengths]  #convert long to int object
     cont_lengths_list = list(cont_lengths)
+    print "number of contigs:", len(cont_lengths_list)
     indexes = [i for i in range(0, len(cont_lengths_list))]
     from heapq import nlargest
     largest_contigs_indexes = nlargest(1000, indexes, key=lambda i: cont_lengths_list[i]) #get indexes of the 1000 longest contigs
-
+    print largest_contigs_indexes
     if not param.read_len: # user has not specified read len  
         #get read length
         try:
@@ -443,6 +444,7 @@ def GetParams(bam_file, param, Scaffolds, C_dict, F, Contigs):
         nr_reads = 0
         tot_read_len = 0
         for read in iter:
+            print read
             if read.rlen != 0:
                 tot_read_len += read.rlen
                 nr_reads += 1
