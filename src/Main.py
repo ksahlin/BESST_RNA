@@ -105,9 +105,9 @@ def Main(contigfile_, tuple_of_bamfiles, tuple_of_means, tuple_of_thresholds, ed
     ### Calculate stats for last scaffolding step    
     scaf_lengths = [Scaffolds[scaffold_].s_length for scaffold_ in Scaffolds.keys()]
     sorted_lengths = sorted(scaf_lengths, reverse=True)
-    NG50, LG50 = CG.CalculateStats(sorted_lengths, param)
-    param.current_LG50 = LG50
-    param.current_NG50 = NG50
+    N50, L50 = CG.CalculateStats(sorted_lengths, param)
+    param.current_L50 = L50
+    param.current_N50 = N50
 #    ### Call a print scaffolds function here for remaining scaffolds that has "passed" all library levels
 #    for scaffold_ in Scaffolds.keys(): #iterate over keys in hash, so that we can remove keys while iterating over it
 #        ###  Go to function and print to F

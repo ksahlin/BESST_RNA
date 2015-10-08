@@ -41,9 +41,9 @@ def PE(Contigs, Scaffolds, F, Information, output_dest, C_dict, param):
             #Calculate NG50 and LG 50
             param.tot_assembly_length = sum(cont_lengths)
             sorted_lengths = sorted(cont_lengths, reverse=True)
-            NG50, LG50 = CalculateStats(sorted_lengths, param)
-            param.current_LG50 = LG50
-            param.current_NG50 = NG50
+            N50, L50 = CalculateStats(sorted_lengths, param)
+            param.current_L50 = L50
+            param.current_N50 = N50
 
 
 ####### WHEN ADDING SHORTER CONTIGS NOT INCLUDED IN THE SCAFFOLDING, 
@@ -69,9 +69,9 @@ def PE(Contigs, Scaffolds, F, Information, output_dest, C_dict, param):
                 #Clean contig_library/scaffold_library
             scaf_lengths = [Scaffolds[scaffold_].s_length for scaffold_ in Scaffolds.keys()]
             sorted_lengths = sorted(scaf_lengths, reverse=True)
-            NG50, LG50 = CalculateStats(sorted_lengths, param)
-            param.current_LG50 = LG50
-            param.current_NG50 = NG50
+            N50, L50 = CalculateStats(sorted_lengths, param)
+            param.current_L50 = L50
+            param.current_N50 = N50
             for scaffold_ in Scaffolds.keys(): #iterate over keys in hash, so that we can remove keys while iterating over it
                 if Scaffolds[scaffold_].s_length < param.contig_threshold:
                     ###  Go to function and print to F
@@ -314,20 +314,20 @@ def PreFilterEdges(G, Scaffolds, param):
 def CalculateStats(sorted_contig_lengths, param):
     cur_length = 0
     nr_conts = 0
-    LG50 = 0
-    NG50 = 0
+    N50 = 0
+    L50 = 0
     for contig_length in sorted_contig_lengths:
         cur_length += contig_length
         nr_conts += 1
         if cur_length >= param.tot_assembly_length / 2.0:
-            LG50 = contig_length
-            NG50 = nr_conts
+            N50 = contig_length
+            L50 = nr_conts
             break
-    if LG50 == 0:
-        print 'NG50 and LG50 could not be calculated in this step data cleared to keep low memory profile.'
+    if N50 == 0:
+        print 'N50 and L50 could not be calculated in this step data cleared to keep low memory profile.'
         print 'This will be taken care of in later versions.'
-    print 'LG50: ', LG50, 'NG50: ', NG50, 'Initial contig assembly length: ', param.tot_assembly_length
-    return(NG50, LG50)
+    print 'L50: ', L50, 'N50: ', N50, 'Initial contig assembly length: ', param.tot_assembly_length
+    return(N50, L50)
 
 def CalculateMeanCoverage(Contigs, first_lib, output_dest, bamfile):
     # tuples like (cont lenght, contig name)
@@ -429,30 +429,26 @@ def GetParams(bam_file, param, Scaffolds, C_dict, F, Contigs):
     cont_lengths = bam_file.lengths
     #cont_lengths=[int(nr) for nr in cont_lengths]  #convert long to int object
     cont_lengths_list = list(cont_lengths)
-    print "number of contigs:", len(cont_lengths_list)
+    #print "number of contigs:", len(cont_lengths_list)
     indexes = [i for i in range(0, len(cont_lengths_list))]
     from heapq import nlargest
     largest_contigs_indexes = nlargest(1000, indexes, key=lambda i: cont_lengths_list[i]) #get indexes of the 1000 longest contigs
-    print largest_contigs_indexes
+    #print largest_contigs_indexes
     if not param.read_len: # user has not specified read len  
         #get read length
-        try:
-            iter = bam_file.fetch(cont_names[largest_contigs_indexes[0]])
-        except ValueError:
-            sys.stderr.write('Need indexed bamfiles, index file should be located in the same directory as the BAM file\nterminating..\n')
-            sys.exit(0)
         nr_reads = 0
         tot_read_len = 0
-        for read in iter:
-            print read
+        for read in bam_file:
             if read.rlen != 0:
                 tot_read_len += read.rlen
                 nr_reads += 1
             else:
                 tot_read_len += read.alen
                 nr_reads += 1
-                #print 'Read has no reported length'
         param.read_len = tot_read_len / float(nr_reads)
+        bam_file.reset()
+
+
 
 
 
